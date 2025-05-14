@@ -71,7 +71,7 @@ export default function TelaInicial() {
       <FlatList
         data={camisas}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (
           <View style={styles.cartao}>
             <Image source={{ uri: item.imagem }} style={styles.imagem} />
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ececec',
-    padding: 20,
+    padding: 8,
   },
   titulo: {
     fontSize: 24,
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
   icones: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginBottom: 10,
     gap: 15,
   },
   iconeAcao: {
@@ -270,8 +271,8 @@ const styles = StyleSheet.create({
     width: '100%',          
     height: 80,              
     resizeMode: 'contain',  
-    marginBottom: 10,
+    padding: 10,
     maxWidth: '100%',       
-  }
+  },
 
 });
