@@ -1,18 +1,23 @@
-import axios from "axios"; // Importa a biblioteca Axios para fazer requisições HTTP
+import axios from 'axios';
 
-// Função assíncrona para buscar os dados das cartas da API
-export async function fetchCards() {
-    try {
-        // Faz uma requisição GET para a API local que fornece os dados das cartas
-        const response = await axios.get("http://191.204.208.99:3000/camisas");
+const API_BASE = "https://api-camisas-production.up.railway.app";
 
-        // Retorna os itens dentro da resposta da API, ou um array vazio caso não existam itens
-        return response.data.items || [];
-    } catch (error) {
-        // Captura e exibe no console qualquer erro que ocorra durante a requisição
-        console.error("Erro na API:", error);
-        
-        // Retorna um array vazio em caso de erro para evitar que o código que consome essa função quebre
-        return [];
-    }
+export async function fetchCamisas() {
+  try {
+    const response = await axios.get(`${API_BASE}/camisas`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar camisas:", error);
+    return [];
+  }
+}
+
+export async function adicionarCamisa(camisa) {
+  try {
+    const response = await axios.post(`${API_BASE}/camisas`, camisa);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao adicionar camisa:", error);
+    throw error;
+  }
 }
