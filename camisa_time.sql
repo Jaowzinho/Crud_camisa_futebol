@@ -4,7 +4,7 @@ CREATE DATABASE camisa_time;
 
 USE camisa_time;
 
-CREATE TABLE camisas (
+CREATE TABLE camisa (
     id_camisa INT AUTO_INCREMENT PRIMARY KEY,
     nome_camisa VARCHAR(100) NOT NULL,
     ano_camisa YEAR NOT NULL,
