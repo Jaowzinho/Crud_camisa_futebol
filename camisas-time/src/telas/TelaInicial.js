@@ -1,8 +1,8 @@
+// TelaInicial.js
 import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   Image,
   TouchableOpacity,
@@ -11,57 +11,61 @@ import {
   Button,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { fetchCamisas, adicionarCamisa as adicionarCamisaAPI } from '../servicos/api';
+import {
+  fetchCamisas,
+  adicionarCamisa as adicionarCamisaAPI,
+  deletarCamisa as deletarCamisaAPI,
+  atualizarCamisa as atualizarCamisaAPI,
+} from '../servicos/api';
+import styles from '../estilos/estiloTelaInicial';
 
 export default function TelaInicial() {
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [modalConfirmacaoVisivel, setModalConfirmacaoVisivel] = useState(false);
+  const [camisaParaExcluir, setCamisaParaExcluir] = useState(null);
+
   const [nome, setNome] = useState('');
   const [ano, setAno] = useState('');
   const [tamanho, setTamanho] = useState('M');
   const [preco, setPreco] = useState('');
   const [imagemUrl, setImagemUrl] = useState('');
   const [camisas, setCamisas] = useState([]);
+  const [camisaEmEdicao, setCamisaEmEdicao] = useState(null);
 
   useEffect(() => {
-    async function carregarCamisas() {
-      const dados = await fetchCamisas();
-      console.log("Dados recebidos da API:", dados);
-
-      // Mapear os dados da API para o formato esperado no app
-      const camisasFormatadas = dados.map(item => ({
-        id: item.idCamisa,
-        nome: item.nomeCamisa,
-        ano: item.anoCamisa,
-        tamanho: item.tamanhoCamisa,
-        preco: item.precoCamisa,
-        imagem: item.urlImg,
-      }));
-
-      setCamisas(camisasFormatadas);
-    }
     carregarCamisas();
   }, []);
 
+  async function carregarCamisas() {
+    const dados = await fetchCamisas();
+    const camisasFormatadas = dados.map(item => ({
+      id: item.idCamisa,
+      nome: item.nomeCamisa,
+      ano: item.anoCamisa,
+      tamanho: item.tamanhoCamisa,
+      preco: item.precoCamisa,
+      imagem: item.urlImg,
+    }));
+    setCamisas(camisasFormatadas);
+  }
+
   const adicionarCamisa = async () => {
-    // Converte preco para número (se estiver como string)
     const precoNum = parseFloat(preco.replace(',', '.'));
-    if (!nome || !ano || !tamanho || !precoNum || !imagemUrl) {
+    if (!nome || !ano || !tamanho || isNaN(precoNum) || !imagemUrl) {
       alert('Preencha todos os campos corretamente.');
       return;
     }
 
     const novaCamisa = {
-      nome,
-      ano: parseInt(ano, 10),
-      tamanho,
-      preco: precoNum,
-      imagem: imagemUrl,
+      nomeCamisa: nome,
+      anoCamisa: parseInt(ano, 10),
+      tamanhoCamisa: tamanho,
+      precoCamisa: precoNum,
+      urlImg: imagemUrl,
     };
 
     try {
       const camisaSalva = await adicionarCamisaAPI(novaCamisa);
-
-      // Também mapeia o objeto retornado da API para o formato do app
       const camisaFormatada = {
         id: camisaSalva.idCamisa,
         nome: camisaSalva.nomeCamisa,
@@ -70,28 +74,100 @@ export default function TelaInicial() {
         preco: camisaSalva.precoCamisa,
         imagem: camisaSalva.urlImg,
       };
-
       setCamisas([...camisas, camisaFormatada]);
       setModalVisivel(false);
-      // Limpa campos
-      setNome('');
-      setAno('');
-      setTamanho('M');
-      setPreco('');
-      setImagemUrl('');
+      limparFormulario();
     } catch (error) {
       alert('Erro ao adicionar camisa.');
       console.error(error);
     }
   };
 
+  const atualizarCamisa = async () => {
+    const precoNum = parseFloat(preco.replace(',', '.'));
+    if (!camisaEmEdicao || !nome || !ano || !tamanho || isNaN(precoNum) || !imagemUrl) {
+      alert('Preencha todos os campos corretamente.');
+      return;
+    }
+  
+    const camisaAtualizada = {
+      idCamisa: camisaEmEdicao.id,
+      nomeCamisa: nome,
+      anoCamisa: parseInt(ano, 10),
+      tamanhoCamisa: tamanho,
+      precoCamisa: precoNum,
+      urlImg: imagemUrl,
+    };
+  
+    try {
+      const camisaEditada = await atualizarCamisaAPI(camisaAtualizada.idCamisa, camisaAtualizada);
+      if (camisaEditada) {
+        setCamisas(camisas.map(c =>
+          c.id === camisaEditada.idCamisa ? {
+            ...c,
+            nome: camisaEditada.nomeCamisa,
+            ano: camisaEditada.anoCamisa,
+            tamanho: camisaEditada.tamanhoCamisa,
+            preco: camisaEditada.precoCamisa,
+            imagem: camisaEditada.urlImg,
+          } : c
+        ));
+        setModalVisivel(false);
+        limparFormulario();
+      } else {
+        alert('Erro ao editar camisa.');
+      }
+    } catch (error) {
+      alert('Erro ao editar camisa.');
+      console.error(error);
+    }
+  };
+  
+
+  const iniciarEdicao = (camisa) => {
+    setCamisaEmEdicao(camisa);
+    setNome(camisa.nome);
+    setAno(camisa.ano.toString());
+    setTamanho(camisa.tamanho);
+    setPreco(camisa.preco.toString());
+    setImagemUrl(camisa.imagem);
+    setModalVisivel(true);
+  };
+
+  const confirmarExclusao = (camisa) => {
+    setCamisaParaExcluir(camisa);
+    setModalConfirmacaoVisivel(true);
+  };
+
+  const deletarCamisa = async () => {
+    try {
+      const sucesso = await deletarCamisaAPI(camisaParaExcluir.id);
+      if (sucesso) {
+        setCamisas(camisas.filter(c => c.id !== camisaParaExcluir.id));
+        setModalConfirmacaoVisivel(false);
+        setCamisaParaExcluir(null);
+      } else {
+        alert('Erro ao deletar a camisa.');
+      }
+    } catch (erro) {
+      alert('Erro ao deletar camisa.');
+      console.error(erro);
+    }
+  };
+
+  const limparFormulario = () => {
+    setNome('');
+    setAno('');
+    setTamanho('M');
+    setPreco('');
+    setImagemUrl('');
+    setCamisaEmEdicao(null);
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center', marginTop: 10 }}>
-        <Image 
-          source={require('../assets/icon.png')} 
-          style={styles.logo}
-        />
+        <Image source={require('../assets/icon.png')} style={styles.logo} />
       </View>
 
       <FlatList
@@ -100,9 +176,9 @@ export default function TelaInicial() {
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
           <View style={styles.cartao}>
-            <Image 
-              source={{ uri: item.imagem || 'https://via.placeholder.com/400x400?text=Sem+imagem' }} 
-              style={styles.imagem} 
+            <Image
+              source={{ uri: item.imagem || 'https://via.placeholder.com/400x400?text=Sem+imagem' }}
+              style={styles.imagem}
             />
             <View style={styles.info}>
               <Text style={styles.nome}>{item.nome}</Text>
@@ -113,10 +189,10 @@ export default function TelaInicial() {
               </Text>
             </View>
             <View style={styles.icones}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => iniciarEdicao(item)}>
                 <Image source={require('../assets/editar.png')} style={styles.iconeAcao} />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => confirmarExclusao(item)}>
                 <Image source={require('../assets/deletar.png')} style={styles.iconeAcao} />
               </TouchableOpacity>
             </View>
@@ -136,38 +212,19 @@ export default function TelaInicial() {
         </TouchableOpacity>
       </View>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisivel}
-        onRequestClose={() => setModalVisivel(false)}
-      >
+      {/* Modal Adicionar/Editar */}
+      <Modal animationType="slide" transparent={true} visible={modalVisivel} onRequestClose={() => {
+        setModalVisivel(false);
+        limparFormulario();
+      }}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.titulo}>Adicionar Camisa</Text>
+            <Text style={styles.titulo}>{camisaEmEdicao ? 'Editar Camisa' : 'Adicionar Camisa'}</Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Nome"
-              value={nome}
-              onChangeText={setNome}
-              autoCapitalize="words"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Ano"
-              value={ano}
-              onChangeText={setAno}
-              keyboardType="numeric"
-            />
-
+            <TextInput style={styles.input} placeholder="Nome" value={nome} onChangeText={setNome} autoCapitalize="words" />
+            <TextInput style={styles.input} placeholder="Ano" value={ano} onChangeText={setAno} keyboardType="numeric" />
             <View style={[styles.input, { height: 42, justifyContent: 'center' }]}>
-              <Picker
-                selectedValue={tamanho}
-                onValueChange={(itemValue) => setTamanho(itemValue)}
-                style={{ color: '#000' }}
-                dropdownIconColor="#000"
-              >
+              <Picker selectedValue={tamanho} onValueChange={setTamanho} style={{ color: '#000' }} dropdownIconColor="#000">
                 <Picker.Item label="P" value="P" />
                 <Picker.Item label="M" value="M" />
                 <Picker.Item label="G" value="G" />
@@ -175,23 +232,26 @@ export default function TelaInicial() {
                 <Picker.Item label="XG" value="XG" />
               </Picker>
             </View>
+            <TextInput style={styles.input} placeholder="Preço" value={preco} onChangeText={setPreco} keyboardType="numeric" />
+            <TextInput style={styles.input} placeholder="URL da Imagem" value={imagemUrl} onChangeText={setImagemUrl} autoCapitalize="none" />
 
-            <TextInput
-              style={styles.input}
-              placeholder="Preço"
-              value={preco}
-              onChangeText={setPreco}
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="URL da Imagem"
-              value={imagemUrl}
-              onChangeText={setImagemUrl}
-              autoCapitalize="none"
-            />
-            <Button title="Adicionar" onPress={adicionarCamisa} />
-            <Button title="Cancelar" color="red" onPress={() => setModalVisivel(false)} />
+            <Button title={camisaEmEdicao ? 'Salvar Alterações' : 'Adicionar'} onPress={camisaEmEdicao ? atualizarCamisa : adicionarCamisa} />
+            <Button title="Cancelar" color="red" onPress={() => {
+              setModalVisivel(false);
+              limparFormulario();
+            }} />
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal de Confirmação */}
+      <Modal animationType="fade" transparent={true} visible={modalConfirmacaoVisivel} onRequestClose={() => setModalConfirmacaoVisivel(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.titulo}>Confirmar Exclusão</Text>
+            <Text style={{ marginBottom: 20 }}>Tem certeza que deseja excluir "{camisaParaExcluir?.nome}"?</Text>
+            <Button title="Sim, excluir" onPress={deletarCamisa} />
+            <Button title="Cancelar" color="red" onPress={() => setModalConfirmacaoVisivel(false)} />
           </View>
         </View>
       </Modal>
@@ -199,95 +259,3 @@ export default function TelaInicial() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ececec',
-    padding: 20,
-  },
-  titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 15,
-  },
-  cartao: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 20,
-    elevation: 4,
-  },
-  imagem: {
-  width: '100%',
-  height: 400,
-  resizeMode: 'cover',
-  borderWidth: 2,
-  borderColor: '#000000',
-  borderRadius: 10,
-  marginBottom: 10,
-},
-  info: {
-    marginBottom: 10,
-  },
-  nome: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  preco: {
-    color: 'green',
-    fontWeight: 'bold',
-    marginTop: 5,
-  },
-  icones: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 15,
-  },
-  iconeAcao: {
-    width: 24,
-    height: 24,
-  },
-  barraInferior: {
-    position: 'absolute',
-    bottom: 15,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    elevation: 20,
-  },
-  iconeBarra: {
-    width: 30,
-    height: 30,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    margin: 20,
-    borderRadius: 10,
-    padding: 20,
-    elevation: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 6,
-    padding: 10,
-    marginBottom: 10,
-  },
-  logo: {
-    width: '100%',
-    height: 80,
-    resizeMode: 'contain',
-    marginBottom: 10,
-    maxWidth: '100%',
-  },
-});
