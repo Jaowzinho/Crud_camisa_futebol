@@ -74,7 +74,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 ```
 >## 🖼️ Interface do Aplicativo
 
-![Tela Inicial](./assets/telainicial.png)
+![Tela Inicial](./src/assets/telainicial.png)
 
 ---
 
