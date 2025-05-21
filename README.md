@@ -41,7 +41,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 ```json
 {
   "idCamisa": 1,
-  "nomeCamisa": "Corinthians 2024",
+  "nomeCamisa": "São Paulo 2024",
   "anoCamisa": 2024,
   "tamanhoCamisa": "M",
   "precoCamisa": 299.99,
