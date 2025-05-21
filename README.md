@@ -72,10 +72,9 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 ├── App.js
 └── README.md
 ```
+>## 🖼️ Interface do Aplicativo
 
-### 📷 Exemplo visual (opcional)
-
-> Adicione prints da aplicação aqui para mostrar a UI
+![Tela Inicial](./assets/telainicial.png)
 
 ---
 
@@ -83,7 +82,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 
 * [Lucas Nicolas](https://github.com/Nicks744)
 * [Guilherme Pedrosa](https://github.com/Guilherme6996)
-* [João Vitor Souza](https://github.com/Jaozinho)
+* [João Vitor Souza](https://github.com/Jaowzinho)
 * [Emylly](https://github.com/earaujo17)  
 
 ---
