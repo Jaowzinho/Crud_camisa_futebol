@@ -1,4 +1,5 @@
 // TelaInicial.js
+import { Keyboard } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -31,6 +32,15 @@ export default function TelaInicial() {
   const [imagemUrl, setImagemUrl] = useState('');
   const [camisas, setCamisas] = useState([]);
   const [camisaEmEdicao, setCamisaEmEdicao] = useState(null);
+  const [termoBusca, setTermoBusca] = useState('');
+  const [mostrarBusca, setMostrarBusca] = useState(false);
+
+
+  const camisasFiltradas = camisas.filter(camisa =>
+    camisa.nome.toLowerCase().includes(termoBusca.toLowerCase())
+  );
+  
+
 
   useEffect(() => {
     carregarCamisas();
@@ -170,8 +180,24 @@ export default function TelaInicial() {
         <Image source={require('../assets/icon.png')} style={styles.logo} />
       </View>
 
+      {mostrarBusca && (
+  <TextInput
+    style={styles.input}
+    placeholder="Buscar camisa por nome..."
+    value={termoBusca}
+    onChangeText={setTermoBusca}
+    onSubmitEditing={() => {
+      setMostrarBusca(false);
+      Keyboard.dismiss();
+    }}    
+    returnKeyType="search"
+  />
+)}
+
+
+
       <FlatList
-        data={camisas}
+        data={camisasFiltradas}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
@@ -204,10 +230,13 @@ export default function TelaInicial() {
         <TouchableOpacity onPress={() => setModalVisivel(true)}>
           <Image source={require('../assets/mais.png')} style={styles.iconeBarra} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={require('../assets/bola.png')} style={styles.iconeBarra} />
-        </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+        setMostrarBusca(false);
+        setTermoBusca('');
+        }}>
+              <Image source={require('../assets/bola.png')} style={styles.iconeBarra} />
+</TouchableOpacity>
+        <TouchableOpacity onPress={() => setMostrarBusca(!mostrarBusca)}>
           <Image source={require('../assets/lupa.png')} style={styles.iconeBarra} />
         </TouchableOpacity>
       </View>
