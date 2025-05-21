@@ -78,7 +78,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 
 ---
 
-### 👨‍💻 Autores
+### 👨‍💻 Desenvolvedores
 
 * [Lucas Nicolas](https://github.com/Nicks744)
 * [Guilherme Pedrosa](https://github.com/Guilherme6996)
