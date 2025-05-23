@@ -44,7 +44,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 ### Backend (API)
 
 * Java (Spring Boot ou Jakarta EE)  
-* MySQL ou MongoDB  
+* MySQL  
 * Endpoints: `GET`, `POST`, `PUT`, `DELETE`  
 
 ---
