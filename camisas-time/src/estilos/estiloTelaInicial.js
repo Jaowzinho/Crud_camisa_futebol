@@ -52,16 +52,17 @@ export default StyleSheet.create({
   },
   barraInferior: {
     position: 'absolute',
-    bottom: 15,
+    bottom: 0,                  
     left: 0,
     right: 0,
     backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    elevation: 20,
+    height: 60,                  
+    flexDirection: 'row',       
+    justifyContent: 'space-around', 
+    alignItems: 'center',        
+    elevation: 20,             
   },
+  
   iconeBarra: {
     width: 30,
     height: 30,
