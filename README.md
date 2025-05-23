@@ -1,4 +1,9 @@
-## 🧢 Catálogo de Camisas
+Claro! Aqui está a **versão final do seu `README.md` completa e funcional**, com os links do sumário corrigidos, emojis mantidos nos títulos visuais (sem quebrar os links) e estrutura organizada para uso direto no GitHub:
+
+---
+
+````md
+# 🧢 Catálogo de Camisas
 
 Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas de time. O app consome uma **API REST** feita em **Java (Spring ou similar)**, possibilitando **CRUD completo** (Criar, Listar, Editar e Deletar) de camisas com imagem, preço, tamanho, ano e nome.
 
@@ -6,18 +11,18 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 
 ## 📚 Sumário
 
-- [📱 Funcionalidades](#funcionalidades)
-- [🧩 Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
   - [Frontend](#frontend)
   - [Backend (API)](#backend-api)
-- [🖼️ Estrutura dos dados de uma camisa](#estrutura-dos-dados-de-uma-camisa)
-- [📁 Estrutura do Projeto](#estrutura-do-projeto)
-- [🖼️ Interface do Aplicativo](#interface-do-aplicativo)
-- [👨‍💻 Desenvolvedores](#desenvolvedores)
+- [Estrutura dos dados de uma camisa](#estrutura-dos-dados-de-uma-camisa)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Interface do Aplicativo](#interface-do-aplicativo)
+- [Desenvolvedores](#desenvolvedores)
 
 ---
 
-### 📱 Funcionalidades
+## Funcionalidades
 
 * ✅ Listagem de camisas
 * ✅ Filtro por nome com barra de busca
@@ -26,30 +31,30 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 * ✅ Remoção de camisas com confirmação
 * ✅ Modal para formulário de cadastro e edição
 * ✅ Barra inferior com ícones para:
-
   * Adicionar camisa
   * Resetar a tela (ícone de bola)
   * Exibir/ocultar campo de busca (ícone de lupa)
 
 ---
 
-### 🧩 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-* **Frontend**:
+### Frontend
 
-  * React Native
-  * React Hooks (`useState`, `useEffect`)
-  * FlatList, TextInput, Modal, TouchableOpacity
-  * React Native Picker (`@react-native-picker/picker`)
-* **Backend (API)**:
+- React Native
+- React Hooks (`useState`, `useEffect`)
+- FlatList, TextInput, Modal, TouchableOpacity
+- React Native Picker (`@react-native-picker/picker`)
 
-  * Java (Spring Boot ou Jakarta EE)
-  * MySQL ou MongoDB
-  * Endpoints: `GET`, `POST`, `PUT`, `DELETE`
+### Backend (API)
+
+- Java (Spring Boot ou Jakarta EE)
+- MySQL ou MongoDB
+- Endpoints: `GET`, `POST`, `PUT`, `DELETE`
 
 ---
 
-### 🖼️ Estrutura dos dados de uma camisa
+## Estrutura dos dados de uma camisa
 
 ```json
 {
@@ -60,11 +65,11 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
   "precoCamisa": 299.99,
   "urlImg": "https://exemplo.com/camisa.png"
 }
-```
+````
 
 ---
 
-### 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 📁 projeto/
@@ -85,17 +90,21 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 ├── App.js
 └── README.md
 ```
->## 🖼️ Interface do Aplicativo
+
+---
+
+## Interface do Aplicativo
 
 <img src="https://i.imgur.com/nyNW6mJ.jpeg" alt="Tela inicial do app" width="200"/>
 
 ---
 
-### 👨‍💻 Desenvolvedores
+## Desenvolvedores
 
 * [Lucas Nicolas](https://github.com/Nicks744)
 * [Guilherme Pedrosa](https://github.com/Guilherme6996)
 * [João Vitor Souza](https://github.com/Jaowzinho)
-* [Emylly](https://github.com/earaujo17)  
+* [Emylly](https://github.com/earaujo17)
 
----
+```
+
