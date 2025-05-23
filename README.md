@@ -1,6 +1,3 @@
-Claro! Aqui está a **versão final do seu `README.md` completa e funcional**, com os links do sumário corrigidos, emojis mantidos nos títulos visuais (sem quebrar os links) e estrutura organizada para uso direto no GitHub:
-
----
 
 ````md
 # 🧢 Catálogo de Camisas
