@@ -64,10 +64,10 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura do Projeto (Front)
 
 ```
-📁 projeto/
+📁 camisas-time/
 ├── assets/
 │   ├── mais.png
 │   ├── bola.png
