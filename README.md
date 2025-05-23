@@ -11,7 +11,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
   - [Frontend](#frontend)
   - [Backend (API)](#backend-api)
 - [🖼️ Estrutura dos dados de uma camisa](#%EF%B8%8F-estrutura-dos-dados-de-uma-camisa)
-- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+- [📁 Estrutura do Projeto](#-estrutura-do-projeto-front)
 - [🖼️ Interfaces do Aplicativo](#%EF%B8%8F-interfaces-do-aplicativo)
 - [👨‍💻 Desenvolvedores](#-desenvolvedores)
 
