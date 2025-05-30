@@ -39,8 +39,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
 * React Native  
 * React Hooks (`useState`, `useEffect`)  
 * FlatList, TextInput, Modal, TouchableOpacity  
-* React Native Picker (`@react-native-picker/picker`)  
-
+ 
 ### Backend (API)
 
 * Java (Spring)  
