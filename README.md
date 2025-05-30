@@ -1,6 +1,6 @@
 ## 🧢 Catálogo de Camisas
 
-Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas de time. O app consome uma **API REST** feita em **Java (Spring)**, possibilitando **CRUD completo** (Criar, Listar, Editar e Deletar) de camisas com imagem, preço, tamanho, ano e nome.
+Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas de time. O app consome uma **API REST** feita em **Java (Spring boot)**, possibilitando **CRUD completo** (Criar, Listar, Editar e Deletar) de camisas com imagem, preço, tamanho, ano e nome.
 
 ---
 
@@ -42,7 +42,7 @@ Aplicativo mobile desenvolvido em **React Native** para gerenciamento de camisas
  
 ### Backend (API)
 
-* Java (Spring)  
+* Java (Spring boot)  
 * MySQL  
 * Endpoints: `GET`, `POST`, `PUT`, `DELETE`  
 
